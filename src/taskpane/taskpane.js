@@ -30,28 +30,3 @@ Office.onReady(function (info) {
       document.getElementById("sendButton").onclick = checkRecipientDomain;
   }
 });
-
-function checkRecipientDomain() {
-  Office.context.mailbox.item.to.getAsync(function (result) {
-      if (result.status === Office.AsyncResultStatus.Succeeded) {
-          var recipients = result.value;
-          for (var i = 0; i < recipients.length; i++) {
-              var email = recipients[i].emailAddress;
-              if (!isValidDomain(email)) {
-                  alert("You're trying to send an email to an invalid domain.");
-                  return;
-              }
-          }
-          // If all recipients are valid, proceed with sending the email
-          Office.context.mailbox.item.send();
-      } else {
-          console.error("Error retrieving recipient email addresses.");
-      }
-  });
-}
-
-function isValidDomain(email) {
-  var predefinedDomain = "nxci.ca"; // Change this to your predefined domain
-  var domain = email.split("@")[1];
-  return domain === predefinedDomain;
-}
